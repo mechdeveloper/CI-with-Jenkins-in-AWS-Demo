@@ -1,30 +1,32 @@
 pipeline {
-  agent none
+  environment {
+    registry = "ashishbagheldocker/javamvn"
+    registryCredential = 'docker-hub-credentials'
+    dockerImage = ''
+  }
+  agent any
   stages {
-    stage('build') {
-      agent {
-        docker {
-          image 'maven:3-alpine'
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
-
-      }
-      steps {
-        sh 'mvn --version'
-        sh 'ls project/target/'
       }
     }
-
-    stage('Test') {
-      steps {
-        echo 'Testing..'
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
       }
     }
-
-    stage('Build image') {
-      steps {
-        echo 'Building image ...'
+    stage('Remove Unused docker image') {
+      steps{
+        // sh "docker rmi $registry:$BUILD_NUMBER"
+        sh "docker images"
       }
     }
-
   }
 }
