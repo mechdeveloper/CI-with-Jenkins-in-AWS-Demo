@@ -1,5 +1,14 @@
-FROM tomcat:8.0
+FROM maven:3-alpine as build
+COPY . .
 
-MAINTAINER 'Ashish Singh Baghel'
+RUN ls && \
+    mvn --version && mvn package
 
-COPY project/target/target/*.war /usr/local/tomcat/webapps/
+FROM tomcat:8.0-alpine
+LABEL maintainer="mechashishsingh@gmail.com"
+
+COPY --from=build project/target/*.war /usr/local/tomcat/webapps/
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]
