@@ -6,6 +6,8 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn --version'
+                sh 'mvn package'
+                sh 'ls project/target/'
             }
         }
     }
