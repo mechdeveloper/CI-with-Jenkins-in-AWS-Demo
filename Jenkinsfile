@@ -9,23 +9,31 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          // dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          sh "ls"
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Push Image') {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+            // dockerImage.push()
+            sh "ls"
           }
         }
       }
     }
-    stage('Remove Unused docker image') {
+    stage('Remove Unused local image') {
       steps{
         // sh "docker rmi $registry:$BUILD_NUMBER"
-        sh "docker images"
+        sh "ls"
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh "ls"
+        sh "ssh mechashishsingh@docker-server-760210 ls"
       }
     }
   }
