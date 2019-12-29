@@ -30,11 +30,5 @@ pipeline {
         sh "ls"
       }
     }
-    stage('Deploy') {
-      steps {
-        sh "ls"
-        sh "ssh -o StrictHostKeyChecking=no mechashishsingh@docker-server-760210 ls"
-      }
-    }
   }
 }
