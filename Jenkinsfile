@@ -33,7 +33,7 @@ pipeline {
     stage('Deploy') {
       steps {
         sh "ls"
-        sh "ssh mechashishsingh@docker-server-760210 ls"
+        sh "ssh -o StrictHostKeyChecking=no mechashishsingh@docker-server-760210 ls"
       }
     }
   }
