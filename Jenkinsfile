@@ -9,15 +9,16 @@ pipeline {
     stage ('SCM Checkout') {
       steps {
         script {
-          git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
+          //git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
+          sh "ls"
         }
       }
     }
     stage('Build Docker Image') {
       steps {
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-          // sh "ls"
+          // dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          sh "ls"
         }
       }
     }
@@ -25,8 +26,8 @@ pipeline {
       steps {
         script {
           docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-            // sh "ls"
+            // dockerImage.push()
+            sh "ls"
           }
         }
       }
@@ -34,8 +35,8 @@ pipeline {
     stage('Remove Unused local image') {
       steps {
         script {
-          sh "docker rmi $registry:$BUILD_NUMBER"
-          // sh "ls"
+          // sh "docker rmi $registry:$BUILD_NUMBER"
+          sh "ls"
         }
       }
     }
@@ -47,7 +48,7 @@ pipeline {
           // sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
           // sh "sudo apt update && sudo apt install python-pip -y && pip install --upgrade google-api-python-client"
           // sh "curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py"
-          sh "apt install python-pip -y && pip install --upgrade google-api-python-client"
+          sh "pip install --upgrade google-api-python-client"
           sh "python /home/mechashishsingh_gmail_com/service_account_ssh.py \
                 --cmd '${dockerRun}' \
                 --project tcs-devops-e2 --zone asia-south1-c --instance docker-server-760210"
