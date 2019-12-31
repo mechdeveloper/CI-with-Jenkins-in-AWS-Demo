@@ -45,6 +45,7 @@ pipeline {
           def imageName = registry + ":$BUILD_NUMBER"
           def dockerRun = "docker run -p 8080:8080 -d --name javawebapp ${imageName}"
           // sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
+          sh "sudo apt update && sudo apt install python-pip -y && pip install --upgrade google-api-python-client"
           sh "curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py"
           sh "python service_account_ssh.py \
                 --cmd ${dockerRun} \
