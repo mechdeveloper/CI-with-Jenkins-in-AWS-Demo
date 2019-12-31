@@ -49,7 +49,7 @@ pipeline {
           // sh "curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py"
           sh "pip install --upgrade google-api-python-client"
           sh "python /home/mechashishsingh_gmail_com/service_account_ssh.py \
-                --cmd ${dockerRun} \
+                --cmd '${dockerRun}' \
                 --project tcs-devops-e2 --zone asia-south1-c --instance docker-server-760210"
         }
       }
