@@ -44,7 +44,10 @@ pipeline {
         script {
           def imageName = registry + ":$BUILD_NUMBER"
           def dockerRun = "docker run -p 8080:8080 -d --name javawebapp ${imageName}"
-          sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
+          // sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
+          sh "python service_account_ssh.py \
+                --cmd ${dockerRun} \
+                --project tcs-devops-e2 --zone asia-south1-c --instance docker-server-760210"
         }
       }
     }
