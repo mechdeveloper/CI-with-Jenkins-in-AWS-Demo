@@ -1,4 +1,4 @@
-node {
+pipeline {
   environment {
     registry = "ashishbagheldocker/javamvn"
     registryCredential = 'docker-hub-credentials'
