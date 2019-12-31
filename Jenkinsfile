@@ -6,10 +6,14 @@ pipeline {
   }
   stages {
     stage ('SCM Checkout') {
-      git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
+      steps {
+        script {
+          git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
+        }
+      }
     }
     stage('Build Docker Image') {
-      steps{
+      steps {
         script {
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
           // sh "ls"
@@ -17,7 +21,7 @@ pipeline {
       }
     }
     stage('Push Docker Image') {
-      steps{
+      steps {
         script {
           docker.withRegistry( '', registryCredential ) {
             dockerImage.push()
@@ -27,15 +31,21 @@ pipeline {
       }
     }
     stage('Remove Unused local image') {
-      steps{
-        // sh "docker rmi $registry:$BUILD_NUMBER"
-        sh "ls"
+      steps {
+        script {
+          // sh "docker rmi $registry:$BUILD_NUMBER"
+          sh "ls"
+        }
       }
     }
     stage('Deploy Docker Image'){
-        def imageName = registry + ":$BUILD_NUMBER"
-        def dockerRun = "docker run -p 8080:8080 -d --name javawebapp ${imageName}"
-        sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
+      steps {
+        script {
+          def imageName = registry + ":$BUILD_NUMBER"
+          def dockerRun = "docker run -p 8080:8080 -d --name javawebapp ${imageName}"
+          sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
+        }
+      }
     }
   }
 }
