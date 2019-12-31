@@ -1,25 +1,27 @@
-pipeline {
+node {
   environment {
     registry = "ashishbagheldocker/javamvn"
     registryCredential = 'docker-hub-credentials'
     dockerImage = ''
   }
-  agent any
   stages {
-    stage('Building image') {
+    stage ('SCM Checkout') {
+      git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
+    }
+    stage('Build Docker Image') {
       steps{
         script {
-          // dockerImage = docker.build registry + ":$BUILD_NUMBER"
-          sh "ls"
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          // sh "ls"
         }
       }
     }
-    stage('Push Image') {
+    stage('Push Docker Image') {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
-            // dockerImage.push()
-            sh "ls"
+            dockerImage.push()
+            // sh "ls"
           }
         }
       }
@@ -29,6 +31,11 @@ pipeline {
         // sh "docker rmi $registry:$BUILD_NUMBER"
         sh "ls"
       }
+    }
+    stage('Deploy Docker Image'){
+        def imageName = registry + ":$BUILD_NUMBER"
+        def dockerRun = "docker run -p 8080:8080 -d --name javawebapp ${imageName}"
+        sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
     }
   }
 }
