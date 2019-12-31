@@ -47,6 +47,7 @@ pipeline {
           // sh "ssh -o StrictHostKeyChecking=no mechashishisngh@docker-server-760210 ${dockerRun}"
           // sh "sudo apt update && sudo apt install python-pip -y && pip install --upgrade google-api-python-client"
           // sh "curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py"
+          sh "pip install --upgrade pip"
           sh "pip install --upgrade google-api-python-client"
           sh "python /home/mechashishsingh_gmail_com/service_account_ssh.py \
                 --cmd '${dockerRun}' \
