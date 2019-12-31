@@ -9,16 +9,16 @@ pipeline {
     stage ('SCM Checkout') {
       steps {
         script {
-          //git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
-          sh "ls"
+          git credentialsId: 'gitcredentials', url: 'https://github.com/mechdeveloper/CI-with-Jenkins-in-AWS-Demo.git'
+          // sh "ls"
         }
       }
     }
     stage('Build Docker Image') {
       steps {
         script {
-          // dockerImage = docker.build registry + ":$BUILD_NUMBER"
-          sh "ls"
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          // sh "ls"
         }
       }
     }
@@ -26,8 +26,8 @@ pipeline {
       steps {
         script {
           docker.withRegistry( '', registryCredential ) {
-            // dockerImage.push()
-            sh "ls"
+            dockerImage.push()
+            // sh "ls"
           }
         }
       }
@@ -35,8 +35,8 @@ pipeline {
     stage('Remove Unused local image') {
       steps {
         script {
-          // sh "docker rmi $registry:$BUILD_NUMBER"
-          sh "ls"
+          sh "docker rmi $registry:$BUILD_NUMBER"
+          // sh "ls"
         }
       }
     }
